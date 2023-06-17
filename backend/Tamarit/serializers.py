@@ -1,43 +1,40 @@
 from rest_framework import serializers
-from .models import *
+from django.contrib.auth.models import User
+from .models import Profile, Site, Comment , Favorite
 
-#--------------------------- Site 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Profile
+        fields = ['user', 'role']
+
+
 class SiteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Site
         fields = '__all__'
-class TransportationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Transportation
-        fields = '__all__'
 
-class OpeningHoursSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = OpeningHours
-        fields = '__all__'
 
-class ImagesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Images
-        fields = '__all__'
-
-class EventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Event
-        fields = '__all__'
-
-class SiteDetailsSerializer(serializers.ModelSerializer):
-    opening_hours = OpeningHoursSerializer(many=True, read_only=True, source='openinghours_set')
-    transportation = TransportationSerializer(many=True, read_only=True, source='transportation_set')
-    images = ImagesSerializer(many=True, read_only=True, source='images_set')
-    event = EventSerializer(many=True, read_only=True, source='event_set')
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
 
     class Meta:
-        model = Site
-        fields = '__all__'
+        model = Comment
+        fields = ['user', 'site', 'text', 'created_at']
 
-#---------------------------------
-class ContactMessageSerializer(serializers.ModelSerializer):
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    site = SiteSerializer()
+
     class Meta:
-        model = ContactMessage
-        fields = '__all__'
+        model = Favorite
+        fields = ['site']
+
