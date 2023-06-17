@@ -170,3 +170,25 @@ def user_favorites(request):
     favorites = Favorite.objects.filter(user=user)
     serializer = FavoriteSerializer(favorites, many=True)
     return Response(serializer.data)
+
+#----------------------------------------------------------------------
+#-------------- Touriste ---------------------------------------
+class TouristRegistrationView(CreateView):
+    model = User
+    fields = ['username', 'password', 'email']
+    success_url = reverse_lazy('touriste_home')
+
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data['password'])
+        user.save()
+
+        # Create a profile for the user
+        profile_data = {'user': user, 'role': 'tourist'}
+        profile_serializer = ProfileSerializer(data=profile_data)
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            return JsonResponse({"status": "success"})
+        else:
+            return JsonResponse({"status": "error", "data": profile_serializer.errors}, status=400)
