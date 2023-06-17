@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import image from "./../graphics/Mapsicle Map.png"
+import image from "./../graphics/Mapsicle Map.png";
+
 function EventForm() {
   const [formData, setFormData] = useState({
     titre: "",
     description: "",
     adresse: "",
     wilaya: "",
-    commune: ""
+    commune: "",
+    horairesOuverture: "",
   });
 
   const handleFormSubmit = (event) => {
@@ -69,14 +71,24 @@ function EventForm() {
           />
         </div>
       </div>
+      <h1>Horaire</h1>
+      <label htmlFor="horairesOuverture">Horaire de l'événement</label>
+      <input
+        className="form-field"
+        type="text"
+        id="horairesOuverture"
+        value={formData.horairesOuverture}
+        onChange={(e) => setFormData({ ...formData, horairesOuverture: e.target.value })}
+      />
+
       <label htmlFor="titre">Vous pouvez déplacer le curseur sur la map pour indiquer un emplacement précis</label>
-      <img  className="Map"src={image} alt="not found"/>
+      <img className="Map" src={image} alt="not found" />
+
       <div className="button-container">
-      <button  className="light-btn" onClick={handleFormSubmit}>Valider</button>
+        <button className="light-btn" onClick={handleFormSubmit}>Valider</button>
       </div>
-      </div>
+    </div>
   );
 }
 
 export default EventForm;
-
