@@ -175,3 +175,15 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    message = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Notification for {self.user.username}: {self.message}"
