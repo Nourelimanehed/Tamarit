@@ -176,7 +176,6 @@ def user_favorites(request):
 class TouristRegistrationView(CreateView):
     model = User
     fields = ['username', 'password', 'email']
-    success_url = reverse_lazy('touriste_home')
 
 
     def form_valid(self, form):
