@@ -46,3 +46,18 @@ class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactMessage
         fields = '__all__'
+
+class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = Comment
+        fields = ['user', 'site', 'text', 'created_at']
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    site = SiteSerializer()
+
+    class Meta:
+        model = Favorite
+        fields = ['site']
