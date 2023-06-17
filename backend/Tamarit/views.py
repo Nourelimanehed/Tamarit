@@ -13,7 +13,7 @@ from .serializers import *
 def site_list(request):
     if request.method == 'GET' : 
         sites = Site.objects.all()
-        serializer = SiteSerializer(sites, many=True)
+        serializer = SiteDetailsSerializer(sites, many=True)
         return JsonResponse({'sites' : serializer.data})
     
 #---------------------------------------------------------------------------

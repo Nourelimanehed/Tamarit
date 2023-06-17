@@ -17,9 +17,14 @@ class OpeningHoursSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ImagesSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        return obj.image.url
+
     class Meta:
         model = Images
-        fields = '__all__'
+        fields = ['image']
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:

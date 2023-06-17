@@ -43,6 +43,8 @@ def get_image_filename(instance, filename):
     title = instance.site.name
     slug = slugify(title)
     return "site_images/%s-%s" % (slug, filename)
+  
+
 
 class Images(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, default=None)
