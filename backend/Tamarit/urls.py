@@ -16,6 +16,9 @@ urlpatterns = [
     path('sites/<int:id>', site_details, name='site_details'), #details site
     path('home/contactUs/', csrf_exempt(create_contactMsg)),
     path('home/messages/', contactMsg_list),
+    path('home/add_comment/<int:site_id>/', add_comment, name='add_comment'),
+    path('home/sites/<int:site_id>/favorite/', views.add_favorite, name='add_favorite'),
+    path('home/user/favorites/', views.user_favorites, name='user_favorites'),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
