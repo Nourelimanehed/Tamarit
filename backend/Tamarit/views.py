@@ -103,6 +103,27 @@ def site_details_emp(request,id,format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 #-----------------------------------------------------------------------------
+@api_view(['POST'])
+@login_required(login_url='touriste_login')
+def add_comment(request, site_id):
+    site = get_object_or_404(Site, id=site_id)
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.site = site
+            comment.user = request.user
+            comment.save()
+
+            serializer = CommentSerializer(comment)
+            serialized_comment = serializer.data
+
+            return redirect('site_detail', site_id=site_id)
+    else:
+        form = CommentForm()
+    
+    return render(request, 'add_comment.html', {'form': form, 'serialized_comment': serialized_comment})
 #---------------------- Contact ---------------------------------------
 @api_view(['POST'])
 def create_contactMsg(request):
@@ -129,16 +150,23 @@ def contactMsg_list(request):
 
 #----------------------------------------------------------------------
 #-------------- Favorites ---------------------------------------
-'''@api_view(['POST'])
-def add_favorite(request):
-    ##user = request.user
-    site_id = request.data.get('site_id')
+@api_view(['GET','POST'])
+def add_favorite(request, site_id):
+    user = request.user
+    site = Site.objects.get(id=site_id)
+    
+    if Favorite.objects.filter(user=user, site=site).exists():
+        return Response({"message": "Site already favorited."}, status=400)
+    
+    favorite = Favorite(user=user, site=site)
+    favorite.save()
+    
+    return Response({"message": "Site favorited successfully."}, status=201)
 
-    try:
-        site = Site.objects.get(id=site_id)
-    except Site.DoesNotExist:
-        return Response({'error': 'Site not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    user.favorite_sites.add(site)
-    return Response({'success': 'Site added to favorites'}, status=status.HTTP_200_OK)
-'''
+@api_view(['GET'])
+@login_required(login_url='touriste_login')
+def user_favorites(request):
+    user = request.user
+    favorites = Favorite.objects.filter(user=user)
+    serializer = FavoriteSerializer(favorites, many=True)
+    return Response(serializer.data)
