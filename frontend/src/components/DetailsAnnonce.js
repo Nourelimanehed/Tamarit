@@ -81,9 +81,6 @@ const DetailsAnnonce = () => {
         <h1>{name}</h1>
         <div className="place-details-header">
           <img src={imageUrl} alt="Lieu touristique" style={{ width: '500px', height: '500px' }} />
-          <div className="place-map">
-            <img src={image1} alt="Map touristique" />
-          </div>
         </div>
         <div className="place-details-info">
           <h1>Description</h1>
