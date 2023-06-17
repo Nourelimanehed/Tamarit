@@ -66,10 +66,22 @@ def create_site(request):
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 #------------------------------------------------------------------
+@api_view(['GET'])
+@csrf_exempt
+def site_details(request,id,format=None):
+    try:
+        site = Site.objects.get(pk=id)
+    except Site.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = SiteDetailsSerializer(site)
+        return Response(serializer.data)
+#-------------------------------------
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @csrf_exempt
-def site_details(request,id,format=None):
+def site_details_emp(request,id,format=None):
     try:
         site = Site.objects.get(pk=id)
     except Site.DoesNotExist:

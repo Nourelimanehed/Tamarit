@@ -33,7 +33,7 @@ function App() {
           <Route path="mesFavoris" element={<MyAddsFav/>} />
           <Route path="detailesAnnonce" element={<AddDetails/>}/>
           <Route path="mesOffres" element={<MyOffers/>} />
-          <Route path="details" element={<DetailsAnn/>} />
+          <Route path="details/:id" element={<DetailsAnn/>} />
           <Route path="detailsTransport" element={<DetailsTransport/>} />
           <Route path="detailsBus" element={<DetailsBus/>} />
           <Route path="detailsTrain" element={<DetailsTrain/>} />

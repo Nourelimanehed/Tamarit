@@ -1,9 +1,8 @@
 import React from 'react';
-import './../App.css';
 import { Link } from 'react-router-dom';
 
 const AddCube = ({ site }) => {
-  const { name, description } = site;
+  const { id, name, description } = site;
   const imageUrl = `http://localhost:8000/${site.images[0]?.image.replace('site_images/', '')}`;
 
   return (
@@ -17,7 +16,7 @@ const AddCube = ({ site }) => {
       />
 
       <div className="add-cube-title">
-        <Link className="nav-item" to="/details">
+        <Link className="nav-item" to={{ pathname: `/details/${id}`, state: { site } }}>
           {name}
         </Link>
       </div>
