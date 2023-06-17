@@ -11,3 +11,6 @@ cd to frontend
 npm install
 npm install axios
 npm start 
+
+//-------------------------------------------------------//
+![image](https://github.com/Nourelimanehed/Tamarit/assets/91683421/78daef46-c772-4a9f-8e5a-065e4acd513a)
