@@ -38,10 +38,9 @@ class TouristRegistrationView(CreateView):
         profile_serializer = ProfileSerializer(data=profile_data)
         if profile_serializer.is_valid():
             profile_serializer.save()
-            return super().form_valid(form)
+            return redirect(self.success_url)
         else:
-            return Response({"status": "error", "data": profile_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
+            return super().form_invalid(form)
 #-----------------------------------------------
 @csrf_exempt
 @api_view(['POST'])
@@ -164,9 +163,9 @@ class RegionnalRegistrationView(CreateView):
         profile_serializer = ProfileSerializer(data=profile_data)
         if profile_serializer.is_valid():
             profile_serializer.save()
-            return super().form_valid(form)
+            return redirect(self.success_url)
         else:
-            return Response({"status": "error", "data": profile_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return super().form_invalid(form)
 
 #-----------------------------------------------
 @csrf_exempt
@@ -250,9 +249,9 @@ class AdminRegistrationView(CreateView):
         profile_serializer = ProfileSerializer(data=profile_data)
         if profile_serializer.is_valid():
             profile_serializer.save()
-            return super().form_valid(form)
+            return redirect(self.success_url)
         else:
-            return Response({"status": "error", "data": profile_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return super().form_invalid(form)
 
 #-----------------------------------------------
 @csrf_exempt
