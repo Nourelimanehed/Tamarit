@@ -3,7 +3,7 @@ import {RxCross2} from 'react-icons/rx';
 import {BiMessage} from 'react-icons/bi';
 export default function Login() {
   const handleButtonClick = () => {
-    window.location.href = 'https://www.example.com';    /*URL DE DESTINATION */
+    window.location.href = 'http://localhost:8000/tourist/register/';    /*URL DE DESTINATION */
   }
     return (
       // CSS de la section
