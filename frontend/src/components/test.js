@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Footer1 from "./Footer1";
-import { Outlet, Link } from "react-router-dom"
+import { Outlet, Link } from "react-router-dom";
+
+import EventForm from "./EventForm";
 
 function FormTest() {
   const [step, setStep] = useState(1);
@@ -10,11 +12,13 @@ function FormTest() {
     adresse: "",
     wilaya: "",
     commune: "",
-    moyensDeTransport: "",
+    moyensDeTransport: [],
     evenement: false,
-    photos: []
+    photos: [],
+    horairesOuverture: "",
   });
-  const [showTransportList, setShowTransportList] = useState(true); 
+  const [showTransportList, setShowTransportList] = useState(true);
+
   const handleNextStep = () => {
     setStep(step + 1);
   };
@@ -29,9 +33,17 @@ function FormTest() {
     console.log(formData);
   };
 
+  const handleTransportChange = (transport) => {
+    const transportList = formData.moyensDeTransport.includes(transport)
+      ? formData.moyensDeTransport.filter((item) => item !== transport)
+      : [...formData.moyensDeTransport, transport];
+    setFormData({ ...formData, moyensDeTransport: transportList });
+  };
+
   const renderStep1 = () => (
-    <><h1>Informations</h1>
-      <br/>
+    <>
+      <h1>Informations</h1>
+      <br />
       <label htmlFor="titre">Titre *</label>
       <input
         className="form-field"
@@ -50,10 +62,11 @@ function FormTest() {
           setFormData({ ...formData, description: e.target.value })
         }
       />
-       <h1>Adresse</h1>
+
+      <h1>Adresse</h1>
       <label htmlFor="adresse">Adresse *</label>
       <input
-       className="form-field"
+        className="form-field"
         type="text"
         id="adresse"
         value={formData.adresse}
@@ -62,7 +75,7 @@ function FormTest() {
 
       <div className="form-2-field">
         <div className="form-1-field">
-          <label   htmlFor="wilaya">Wilaya *</label>
+          <label htmlFor="wilaya">Wilaya *</label>
           <input
             type="text"
             id="wilaya"
@@ -80,81 +93,96 @@ function FormTest() {
             onChange={(e) => setFormData({ ...formData, commune: e.target.value })}
           />
         </div>
-        
       </div>
-      
     </>
   );
 
   const renderStep2 = () => (
     <>
-      <h1>Ajouter les moyens de transports</h1>
-    <div className="transport-field">
-      <input
-      onClick={() => setShowTransportList(!showTransportList)}
-        type="text"
-        id="moyensDeTransport"
-        value={formData.moyensDeTransport}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            moyensDeTransport: e.target.value.split(",").map((value) => value.trim())
-          })
-        }
-        onFocus={() => setShowTransportList(true)}
-        onBlur={() => setShowTransportList(false)}
-      />
-      
-    </div>
+      <h1>Ajouter les moyens de transport</h1>
+      <div className="transport-field">
+        <input
+          onClick={() => setShowTransportList(!showTransportList)}
+          type="text"
+          id="moyensDeTransport"
+          value={formData.moyensDeTransport.join(", ")}
+          readOnly
+        />
+      </div>
 
-    {showTransportList && (
-      <select
-        multiple
-        value={formData.moyensDeTransport}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            moyensDeTransport: Array.from(e.target.selectedOptions, (option) => option.value)
-          })
-        }
-      >
-        <option value="bus">Bus</option>
-        <option value="metro">Métro</option>
-        <option value="train">Train</option>
-        <option value="souterraine">Souterraine</option>
-        <option value="velo">Vélo</option>
-        <option value="tram">Tram</option>
-      </select>
-    )}
-
+      {showTransportList && (
+        <div className="transport-options">
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.moyensDeTransport.includes("bus")}
+              onChange={() => handleTransportChange("bus")}
+            />
+            <span className="checkbox-label">Bus</span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.moyensDeTransport.includes("tram")}
+              onChange={() => handleTransportChange("tram")}
+            />
+            <span className="checkbox-label">Tram</span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.moyensDeTransport.includes("train")}
+              onChange={() => handleTransportChange("train")}
+            />
+            <span className="checkbox-label">Train</span>
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.moyensDeTransport.includes("souterraine")}
+              onChange={() => handleTransportChange("souterraine")}
+            />
+            <span className="checkbox-label">Souterraine</span>
+          </label>
+        </div>
+      )}
 
       <div>
-      <h1>  Un événement à ajouter?</h1>
-      <Link id="nav-item"to="/EventForm"> 
-            <button
-        className="light-btn"
-       
-      >
-        Ajouter Un événement 
-      </button>
-      </Link>
-          </div>
-        
-      
+        <h1>Un événement à ajouter?</h1>
+        <Link id="nav-item" to="/EventForm">
+          <button className="light-btn">
+            Ajouter Un événement
+          </button>
+        </Link>
+      </div>
 
-      <label htmlFor="photos">Vous pouvez ajouter une ou plusieurs images en cliquant sur ce texte . Pour en ajouter plusieurs vous pouvez .
-                en sélectionner plusieurs en même temps.</label>
+
+      <h1>Ajouter des images </h1>
+      <div className="image-upload">
+        <input
+          type="file"
+          id="photos"
+          multiple
+          onChange={(e) =>
+            setFormData({ ...formData, photos: Array.from(e.target.files) })
+          }
+        />
+        <label htmlFor="photos">Vous pouvez ajouter une ou plusieurs images. Pour en ajouter plusieurs, vous pouvez en sélectionner plusieurs en même temps.</label>
+      </div>
+
+      <h1>Ajouter les horaires d'ouverture</h1>
       <input
-        type="file"
-        id="photos"
-        multiple
-        onChange={(e) =>
-          setFormData({ ...formData, photos: Array.from(e.target.files) })
-        }
+        className="form-field"
+        type="text"
+        id="horairesOuverture"
+        value={formData.horairesOuverture}
+        onChange={(e) => setFormData({ ...formData, horairesOuverture: e.target.value })}
       />
-       
+
+      
     </>
   );
+
 
   return (
     <div className="App">
